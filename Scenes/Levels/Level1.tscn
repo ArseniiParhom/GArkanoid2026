@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dpq5fhjjw5yqw"]
+
+[ext_resource type="Texture2D" uid="uid://dfqoxo6kupf8t" path="res://icon.svg" id="1_36ke7"]
+[ext_resource type="Script" uid="uid://6vewlbp6xthl" path="res://Scripts/RotatingSprite.cs" id="2_36ke7"]
+
+[node name="Node2D" type="Node2D" unique_id=1548787812]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=67081542]
+position = Vector2(597, 310)
+texture = ExtResource("1_36ke7")
+script = ExtResource("2_36ke7")
+_speed = 10
+_angularSpeed = 3.14
