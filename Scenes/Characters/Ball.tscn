@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dwbmyhi7ior27"]
+
+[ext_resource type="Script" uid="uid://5l1np3oviwwb" path="res://Scripts/Ball.cs" id="1_hvbhq"]
+[ext_resource type="Texture2D" uid="uid://bgoyptjxivqda" path="res://Art/32/ball.png" id="2_x07xo"]
+
+[node name="Ball" type="Node2D" unique_id=1618269348]
+position = Vector2(2, 0)
+script = ExtResource("1_hvbhq")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1850769558]
+
+[node name="Ball" type="Sprite2D" parent="." unique_id=644506116]
+texture = ExtResource("2_x07xo")
