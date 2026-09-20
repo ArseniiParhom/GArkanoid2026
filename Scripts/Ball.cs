@@ -1,34 +1,41 @@
 using Godot;
-using System;
 
 public partial class Ball : Node2D
 {
-	[Export] private float _speed = 10f;
+    [Export]
+    public float Speed = 200.0f;
 
-	public float Speed { 
-		get { return _speed; }
-	}
+    private Vector2 _velocity = Vector2.Zero;
+    private bool _launched = false;
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		float deltaTime = (float)delta;
+    private Paddle _paddle;
+    private Vector2 _paddleOffset;
 
-		Vector2 input = Input.GetVector("Left", "Right", "Up", "Down");
+    public override void _Ready()
+    {
+        _paddle = GetNode<Paddle>("../Paddle");
 
-		GD.Print($"Input: {input}");
+        _paddleOffset = GlobalPosition - _paddle.GlobalPosition;
+    }
 
-		Position += input * _speed * deltaTime;
+    public void Launch()
+    {
+        if (_launched)
+            return;
 
-		GD.Print($"Position: {Position}");
-	}
+        _launched = true;
 
-	// <summary>
-	// Called every physics frame. 'delta' is the elapsed time since the previous frame.
-	// </summary>
-	// <param name="delta">The elapsed time since the previous frame.</param>
-	public override void _PhysicsProcess(double delta)
-	{
-		base._PhysicsProcess(delta);
-	}
+        _velocity = new Vector2(1, -1).Normalized() * Speed;
+    }
+
+    public override void _Process(double delta)
+    {
+        if (!_launched)
+        {
+            GlobalPosition = _paddle.GlobalPosition + _paddleOffset;
+            return;
+        }
+
+        Position += _velocity * (float)delta;
+    }
 }

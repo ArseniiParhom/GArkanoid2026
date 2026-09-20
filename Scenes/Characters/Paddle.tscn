@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://l74rropidm4x"]
 
 [ext_resource type="Texture2D" uid="uid://3w1se1n6xfst" path="res://Art/32/paddle.png" id="1_825hs"]
+[ext_resource type="Script" uid="uid://ce0mr3iwqj0f6" path="res://Scripts/Paddle.cs" id="1_g3s6r"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_idito"]
 radius = 15.0
 height = 58.0
 
 [node name="Paddle" type="CharacterBody2D" unique_id=590204843]
+script = ExtResource("1_g3s6r")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2011356596]
 texture = ExtResource("1_825hs")
