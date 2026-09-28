@@ -3,11 +3,18 @@
 [ext_resource type="Script" uid="uid://5l1np3oviwwb" path="res://Scripts/Ball.cs" id="1_hvbhq"]
 [ext_resource type="Texture2D" uid="uid://bgoyptjxivqda" path="res://Art/32/ball.png" id="2_x07xo"]
 
-[node name="Ball" type="Node2D" unique_id=1618269348]
+[sub_resource type="CircleShape2D" id="CircleShape2D_idito"]
+radius = 15.033297
+
+[node name="Ball" type="CharacterBody2D" unique_id=1286916513]
 position = Vector2(2, 0)
+collision_mask = 6
 script = ExtResource("1_hvbhq")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1850769558]
 
 [node name="Ball" type="Sprite2D" parent="." unique_id=644506116]
 texture = ExtResource("2_x07xo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1905289245]
+shape = SubResource("CircleShape2D_idito")

@@ -1,11 +1,11 @@
 using Godot;
 
-public partial class Ball : Node2D
+public partial class Ball : CharacterBody2D
 {
-    [Export]
-    public float Speed = 200.0f;
+    [Export] private Vector2 _direction = new Vector2(1, -1).Normalized();
 
-    private Vector2 _velocity = Vector2.Zero;
+    [Export] private float _speed = 200.0f;
+
     private bool _launched = false;
 
     private Paddle _paddle;
@@ -14,7 +14,6 @@ public partial class Ball : Node2D
     public override void _Ready()
     {
         _paddle = GetNode<Paddle>("../Paddle");
-
         _paddleOffset = GlobalPosition - _paddle.GlobalPosition;
     }
 
@@ -24,11 +23,10 @@ public partial class Ball : Node2D
             return;
 
         _launched = true;
-
-        _velocity = new Vector2(1, -1).Normalized() * Speed;
+        _direction = _direction.Normalized();
     }
 
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
         if (!_launched)
         {
@@ -36,6 +34,14 @@ public partial class Ball : Node2D
             return;
         }
 
-        Position += _velocity * (float)delta;
+        Vector2 motion = _direction * _speed * (float)delta;
+
+        KinematicCollision2D collision = MoveAndCollide(motion);
+
+        if (collision != null)
+        {
+            Vector2 normal = collision.GetNormal();
+            _direction = _direction.Bounce(normal).Normalized();
+        }
     }
 }

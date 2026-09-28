@@ -3,11 +3,40 @@
 [ext_resource type="PackedScene" uid="uid://l74rropidm4x" path="res://Scenes/Characters/Paddle.tscn" id="1_echjq"]
 [ext_resource type="PackedScene" uid="uid://dwbmyhi7ior27" path="res://Scenes/Characters/Ball.tscn" id="2_02k47"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_idito"]
+size = Vector2(20, 360)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_02k47"]
+size = Vector2(640, 20)
+
 [node name="Node2D" type="Node2D" unique_id=1850840342]
 
 [node name="Paddle" parent="." unique_id=590204843 instance=ExtResource("1_echjq")]
-position = Vector2(319, 290)
+position = Vector2(312, 332)
 
 [node name="Ball" parent="." unique_id=1618269348 instance=ExtResource("2_02k47")]
-position = Vector2(316, 189)
-_speed = 100.0
+position = Vector2(312, 296)
+
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=1148131107]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=631227112]
+position = Vector2(0, 180)
+shape = SubResource("RectangleShape2D_idito")
+
+[node name="RightWall" type="StaticBody2D" parent="." unique_id=786469479]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall" unique_id=151731817]
+position = Vector2(640, 180)
+shape = SubResource("RectangleShape2D_idito")
+
+[node name="TopWall" type="StaticBody2D" parent="." unique_id=2002689683]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopWall" unique_id=223248367]
+position = Vector2(320, 0)
+shape = SubResource("RectangleShape2D_02k47")
