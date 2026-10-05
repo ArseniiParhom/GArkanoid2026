@@ -10,12 +10,16 @@ public partial class CustomBall : Sprite2D
     private Sprite2D _leftWall;
     private Sprite2D _rightWall;
 
+    private float _radius;
+
     public override void _Ready()
     {
         _topWall = GetNode<Sprite2D>("../TopWall");
         _bottomWall = GetNode<Sprite2D>("../BottomWall");
         _leftWall = GetNode<Sprite2D>("../LeftWall");
         _rightWall = GetNode<Sprite2D>("../RightWall");
+
+        _radius = Texture.GetSize().X * Mathf.Abs(GlobalScale.X) / 2.0f;
     }
 
     public override void _Process(double delta)
@@ -31,7 +35,11 @@ public partial class CustomBall : Sprite2D
     private void CheckCollision(Sprite2D wall)
     {
         CustomPhysics.Hit hit =
-            CustomPhysics.Intersects(wall.GetBoundingBox(), GlobalPosition);
+            CustomPhysics.Intersects(
+                wall.GetBoundingBox(),
+                GlobalPosition,
+                _radius
+            );
 
         if (hit == null)
             return;

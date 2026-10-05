@@ -9,6 +9,7 @@ public static class CustomPhysics
         public Vector2 Penetration { get; set; }
     }
 
+    // Point vs Rectangle
     public static Hit Intersects(Rect2 rect, Vector2 point)
     {
         Vector2 center = rect.GetCenter();
@@ -54,11 +55,49 @@ public static class CustomPhysics
         }
     }
 
-	public static Vector2 Bounce(Vector2 direction, Vector2 normal)
-	{
-		Vector2 parallelComponent = direction.Dot(normal) * normal;
-		Vector2 perpendicularComponent = direction - parallelComponent;
+    // Circle vs Rectangle
+    public static Hit Intersects(Rect2 rect, Vector2 center, float radius)
+    {
+        Hit pointHit = Intersects(rect, center);
 
-		return perpendicularComponent - parallelComponent;
-	}
+        if (pointHit != null)
+        {
+            pointHit.Penetration += pointHit.Normal * radius;
+            return pointHit;
+        }
+
+        Vector2 closestPoint = new Vector2(
+            Mathf.Clamp(center.X, rect.Position.X, rect.End.X),
+            Mathf.Clamp(center.Y, rect.Position.Y, rect.End.Y)
+        );
+
+        Vector2 delta = center - closestPoint;
+        float distanceSquared = delta.LengthSquared();
+
+        if (distanceSquared > radius * radius)
+        {
+            return null;
+        }
+
+        float distance = Mathf.Sqrt(distanceSquared);
+
+        Vector2 normal = delta.Normalized();
+        float penetrationDepth = radius - distance;
+
+        return new Hit
+        {
+            Point = closestPoint,
+            Normal = normal,
+            Penetration = normal * penetrationDepth
+        };
+    }
+
+    // Bounce / Reflection
+    public static Vector2 Bounce(Vector2 direction, Vector2 normal)
+    {
+        Vector2 parallelComponent = direction.Dot(normal) * normal;
+        Vector2 perpendicularComponent = direction - parallelComponent;
+
+        return perpendicularComponent - parallelComponent;
+    }
 }
