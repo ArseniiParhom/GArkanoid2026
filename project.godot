@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="GArkanoid2026"
-run/main_scene="uid://c6lf8gv16p5ls"
+run/main_scene="uid://crxx6mlqaxkif"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameManager="*uid://bhl31sufd0tvy"
 
 [display]
 

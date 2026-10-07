@@ -40,8 +40,43 @@ public partial class Ball : CharacterBody2D
 
         if (collision != null)
         {
+            Node collider = collision.GetCollider() as Node;
+
+            if (collider is Brick brick)
+            {
+                brick.Hit();
+            }
+
+            if (collider is Floor)
+            {
+                GameManager gameManager =
+                    GetNode<GameManager>("/root/GameManager");
+
+                gameManager.LoseLife();
+
+                GD.Print($"Life lost! Lives remaining: {gameManager.Lives}");
+
+                if (gameManager.Lives > 0)
+                {
+                    ResetBall();
+                }
+                else
+                {
+                    SetPhysicsProcess(false);
+                }
+
+                return;
+            }
+
             Vector2 normal = collision.GetNormal();
             _direction = _direction.Bounce(normal).Normalized();
         }
+    }
+
+    public void ResetBall()
+    {
+        _launched = false;
+        _direction = new Vector2(1, -1).Normalized();
+        GlobalPosition = _paddle.GlobalPosition + _paddleOffset;
     }
 }
