@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://d1plgns65le2j"]
+
+[ext_resource type="Script" uid="uid://da1gne4383lb1" path="res://Options.cs" id="1_qqnya"]
+
+[node name="Options" type="Control" unique_id=900319045]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qqnya")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1105057842]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0627451, 0.09411765, 0.15294118, 0.7058824)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1950069229]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1010921964]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="OptionsLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1066341821]
+layout_mode = 2
+text = "OPTIONS"
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2007886260]
+layout_mode = 2
+text = "Close"
