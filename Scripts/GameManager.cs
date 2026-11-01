@@ -7,7 +7,8 @@ public partial class GameManager : Node
         MainMenu,
         Level,
         GameOver,
-        Options
+        Options,
+        Pause
     }
 
     public GameState CurrentState { get; private set; } = GameState.MainMenu;
@@ -39,7 +40,10 @@ public partial class GameManager : Node
             OpenOptions();
             GetViewport().SetInputAsHandled();
         }
-        else if (CurrentState == GameState.Options)
+        else if (
+            CurrentState == GameState.Options ||
+            CurrentState == GameState.Pause
+        )
         {
             CloseOptions();
             GetViewport().SetInputAsHandled();
@@ -81,7 +85,10 @@ public partial class GameManager : Node
 
     public void ChangeState(GameState newState)
     {
-        if (newState == GameState.Options)
+        if (
+            newState == GameState.Options ||
+            newState == GameState.Pause
+        )
         {
             OpenOptions();
             return;
@@ -132,12 +139,14 @@ public partial class GameManager : Node
 
         _previousState = CurrentState;
 
+        CurrentState = _previousState == GameState.Level
+            ? GameState.Pause
+            : GameState.Options;
+
         _optionsInstance = optionsScene.Instantiate<Control>();
         _optionsInstance.ProcessMode = ProcessModeEnum.Always;
 
         GetTree().Root.AddChild(_optionsInstance);
-
-        CurrentState = GameState.Options;
         GetTree().Paused = true;
     }
 

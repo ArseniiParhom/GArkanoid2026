@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d1plgns65le2j"]
 
 [ext_resource type="Script" uid="uid://da1gne4383lb1" path="res://Options.cs" id="1_qqnya"]
+[ext_resource type="Script" uid="uid://8gp2qo2yblqd" path="res://Scripts/PauseOnly.cs" id="2_hg628"]
 
 [node name="Options" type="Control" unique_id=900319045]
 layout_mode = 3
@@ -29,14 +30,108 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1010921964]
-custom_minimum_size = Vector2(180, 0)
+custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 8
 
 [node name="OptionsLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1066341821]
 layout_mode = 2
 text = "OPTIONS"
 horizontal_alignment = 1
+
+[node name="AudioSection" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1609732384]
+layout_mode = 2
+
+[node name="AudioLabel" type="Label" parent="CenterContainer/VBoxContainer/AudioSection" unique_id=164159870]
+layout_mode = 2
+text = "AUDIO"
+horizontal_alignment = 1
+
+[node name="MasterRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer/AudioSection" unique_id=1710174427]
+layout_mode = 2
+
+[node name="MasterLabel" type="Label" parent="CenterContainer/VBoxContainer/AudioSection/MasterRow" unique_id=1659850218]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "MASTER"
+
+[node name="MasterSlider" type="HSlider" parent="CenterContainer/VBoxContainer/AudioSection/MasterRow" unique_id=1257511478]
+layout_mode = 2
+size_flags_horizontal = 3
+value = 100.0
+
+[node name="MasterValueLabel" type="Label" parent="CenterContainer/VBoxContainer/AudioSection/MasterRow" unique_id=2019531209]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+text = "100"
+
+[node name="MusicRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer/AudioSection" unique_id=633019549]
+layout_mode = 2
+
+[node name="MusicLabel" type="Label" parent="CenterContainer/VBoxContainer/AudioSection/MusicRow" unique_id=287390593]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "MUSIC"
+
+[node name="MusicSlider" type="HSlider" parent="CenterContainer/VBoxContainer/AudioSection/MusicRow" unique_id=12026627]
+layout_mode = 2
+size_flags_horizontal = 3
+value = 100.0
+
+[node name="MusicValueLabel" type="Label" parent="CenterContainer/VBoxContainer/AudioSection/MusicRow" unique_id=152866435]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+text = "100"
+
+[node name="SfxRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer/AudioSection" unique_id=407657367]
+layout_mode = 2
+
+[node name="SfxLabel" type="Label" parent="CenterContainer/VBoxContainer/AudioSection/SfxRow" unique_id=1061619357]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "SFX"
+
+[node name="SfxSlider" type="HSlider" parent="CenterContainer/VBoxContainer/AudioSection/SfxRow" unique_id=1147737887]
+layout_mode = 2
+size_flags_horizontal = 3
+value = 100.0
+
+[node name="SfxValueLabel" type="Label" parent="CenterContainer/VBoxContainer/AudioSection/SfxRow" unique_id=1923470203]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+text = "100"
+
+[node name="VideoSection" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=471496964]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="VideoLabel" type="Label" parent="CenterContainer/VBoxContainer/VideoSection" unique_id=960458107]
+layout_mode = 2
+text = "VIDEO"
+horizontal_alignment = 1
+
+[node name="ResolutionOptionButton" type="OptionButton" parent="CenterContainer/VBoxContainer/VideoSection" unique_id=1196769657]
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "640x360"
+popup/item_0/id = 0
+popup/item_1/text = "1280x720"
+popup/item_1/id = 1
+popup/item_2/text = "1920x1080"
+popup/item_2/id = 2
+
+[node name="FullscreenCheckBox" type="CheckBox" parent="CenterContainer/VBoxContainer/VideoSection" unique_id=187968003]
+layout_mode = 2
+button_pressed = true
+text = "FULLSCREEN"
+
+[node name="BackToMainMenuButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=33096222]
+layout_mode = 2
+text = "Back to Main Menu"
+
+[node name="PauseOnly" type="Node" parent="CenterContainer/VBoxContainer/BackToMainMenuButton" unique_id=1002754097]
+script = ExtResource("2_hg628")
 
 [node name="CloseButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2007886260]
 layout_mode = 2
