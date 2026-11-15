@@ -16,6 +16,10 @@ public partial class GameManager : Node
     private GameState _previousState;
     private Control _optionsInstance;
 
+    private AudioStreamPlayer _musicPlayer;
+    private AudioStream _mainMenuMusic;
+    private AudioStream _gameplayMusic;
+
     public int Score { get; private set; } = 0;
     public int Lives { get; private set; } = 3;
 
@@ -28,6 +32,18 @@ public partial class GameManager : Node
     public override void _Ready()
     {
         ProcessMode = ProcessModeEnum.Always;
+
+        _musicPlayer = GetNode<AudioStreamPlayer>("MusicPlayer");
+
+        _mainMenuMusic = GD.Load<AudioStream>(
+            "res://Audio/Music/main_menu.ogg"
+        );
+
+        _gameplayMusic = GD.Load<AudioStream>(
+            "res://Audio/Music/gameplay.ogg"
+        );
+
+        UpdateMusic(CurrentState);
     }
 
     public override void _Input(InputEvent @event)
@@ -116,11 +132,37 @@ public partial class GameManager : Node
         if (result == Error.Ok)
         {
             CurrentState = newState;
+            UpdateMusic(newState);
         }
         else
         {
             GD.PushError($"Failed to load scene: {scenePath}");
         }
+    }
+
+    private void UpdateMusic(GameState state)
+    {
+        AudioStream nextTrack = state switch
+        {
+            GameState.MainMenu => _mainMenuMusic,
+            GameState.Level => _gameplayMusic,
+            _ => null
+        };
+
+        // Keep the current track if it is already playing
+        if (_musicPlayer.Stream == nextTrack)
+        {
+            if (nextTrack != null && !_musicPlayer.Playing)
+                _musicPlayer.Play();
+
+            return;
+        }
+
+        _musicPlayer.Stop();
+        _musicPlayer.Stream = nextTrack;
+
+        if (nextTrack != null)
+            _musicPlayer.Play();
     }
 
     public void OpenOptions()

@@ -1,0 +1,13 @@
+Music Credits
+
+Main Menu Music
+Title: Menu Music
+Author: wipics
+Source: https://opengameart.org/content/menu-music-1
+License: CC0 (Public Domain)
+
+Gameplay Music
+Title: Head in the Sand
+Author: congusbongus
+Source: https://opengameart.org/content/head-in-the-sand-seamless-loop
+License: CC0 (Public Domain)
