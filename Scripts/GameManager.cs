@@ -7,6 +7,7 @@ public partial class GameManager : Node
         MainMenu,
         Level,
         GameOver,
+        Victory,
         Options,
         Pause
     }
@@ -118,6 +119,7 @@ public partial class GameManager : Node
             GameState.MainMenu => "res://Scenes/MainMenu.tscn",
             GameState.Level => "res://Scenes/Levels/Level.tscn",
             GameState.GameOver => "res://Scenes/GameOver.tscn",
+            GameState.Victory => "res://Scenes/Victory.tscn",
             _ => ""
         };
 
@@ -149,7 +151,6 @@ public partial class GameManager : Node
             _ => null
         };
 
-        // Keep the current track if it is already playing
         if (_musicPlayer.Stream == nextTrack)
         {
             if (nextTrack != null && !_musicPlayer.Playing)
