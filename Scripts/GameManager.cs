@@ -1,6 +1,7 @@
 using Godot;
+using Arkanoid.Persistence;
 
-public partial class GameManager : Node
+public partial class GameManager : Node, ISaveable
 {
     public enum GameState
     {
@@ -204,5 +205,42 @@ public partial class GameManager : Node
         _optionsInstance = null;
 
         CurrentState = _previousState;
+    }
+
+    public Godot.Collections.Dictionary<string, Variant> SaveData()
+    {
+        GameState savedState =
+            CurrentState == GameState.Pause ||
+            CurrentState == GameState.Options
+                ? _previousState
+                : CurrentState;
+
+        return new Godot.Collections.Dictionary<string, Variant>
+        {
+            { "score", Score },
+            { "lives", Lives },
+            { "state", (int)savedState }
+        };
+    }
+
+    public void LoadData(
+        Godot.Collections.Dictionary<string, Variant> data)
+    {
+        GameState savedState = (GameState)data["state"].AsInt32();
+
+        if (CurrentState != savedState)
+        {
+            throw new System.InvalidOperationException(
+                "The saved game scene must be loaded first."
+            );
+        }
+
+        Score = data["score"].AsInt32();
+        Lives = data["lives"].AsInt32();
+
+        EmitSignal(SignalName.ScoreChanged, Score);
+        EmitSignal(SignalName.LivesChanged, Lives);
+
+        UpdateMusic(CurrentState);
     }
 }
