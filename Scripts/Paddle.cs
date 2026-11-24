@@ -1,6 +1,7 @@
 using Godot;
+using Arkanoid.Persistence;
 
-public partial class Paddle : CharacterBody2D
+public partial class Paddle : CharacterBody2D, ISaveable
 {
     [Export]
     public float Speed = 300.0f;
@@ -8,14 +9,12 @@ public partial class Paddle : CharacterBody2D
     private Sprite2D _sprite;
     private Ball _ball;
 
-	// Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         _sprite = GetNode<Sprite2D>("Sprite2D");
         _ball = GetNode<Ball>("../Ball");
     }
 
-	// Called every physics frame. 'delta' is the elapsed time since the previous frame.
     public override void _PhysicsProcess(double delta)
     {
         float direction = Input.GetAxis("MoveLeft", "MoveRight");
@@ -40,5 +39,26 @@ public partial class Paddle : CharacterBody2D
         {
             _ball.Launch();
         }
+    }
+
+    public Godot.Collections.Dictionary<string, Variant> SaveData()
+    {
+        return new Godot.Collections.Dictionary<string, Variant>
+        {
+            { "positionX", GlobalPosition.X },
+            { "positionY", GlobalPosition.Y },
+            { "speed", Speed }
+        };
+    }
+
+    public void LoadData(
+        Godot.Collections.Dictionary<string, Variant> data)
+    {
+        GlobalPosition = new Vector2(
+            data["positionX"].AsSingle(),
+            data["positionY"].AsSingle()
+        );
+
+        Speed = data["speed"].AsSingle();
     }
 }

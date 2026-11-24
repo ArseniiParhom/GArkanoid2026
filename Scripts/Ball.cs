@@ -1,6 +1,7 @@
 using Godot;
+using Arkanoid.Persistence;
 
-public partial class Ball : CharacterBody2D
+public partial class Ball : CharacterBody2D, ISaveable
 {
     [Export] private Vector2 _direction = new Vector2(1, -1).Normalized();
 
@@ -78,5 +79,35 @@ public partial class Ball : CharacterBody2D
         _launched = false;
         _direction = new Vector2(1, -1).Normalized();
         GlobalPosition = _paddle.GlobalPosition + _paddleOffset;
+    }
+
+    public Godot.Collections.Dictionary<string, Variant> SaveData()
+    {
+        return new Godot.Collections.Dictionary<string, Variant>
+        {
+            { "positionX", GlobalPosition.X },
+            { "positionY", GlobalPosition.Y },
+            { "directionX", _direction.X },
+            { "directionY", _direction.Y },
+            { "speed", _speed },
+            { "launched", _launched }
+        };
+    }
+
+    public void LoadData(
+        Godot.Collections.Dictionary<string, Variant> data)
+    {
+        GlobalPosition = new Vector2(
+            data["positionX"].AsSingle(),
+            data["positionY"].AsSingle()
+        );
+
+        _direction = new Vector2(
+            data["directionX"].AsSingle(),
+            data["directionY"].AsSingle()
+        );
+
+        _speed = data["speed"].AsSingle();
+        _launched = data["launched"].AsBool();
     }
 }
