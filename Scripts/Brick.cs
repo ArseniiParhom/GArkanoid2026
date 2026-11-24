@@ -1,6 +1,7 @@
 using Godot;
+using Arkanoid.Persistence;
 
-public partial class Brick : StaticBody2D
+public partial class Brick : StaticBody2D, ISaveable
 {
     [Export] public int Points { get; set; } = 100;
 
@@ -11,7 +12,7 @@ public partial class Brick : StaticBody2D
         if (_isDestroyed)
             return;
 
-        _isDestroyed = true;
+        SetDestroyed(true);
 
         GameManager gameManager =
             GetNode<GameManager>("/root/GameManager");
@@ -24,18 +25,14 @@ public partial class Brick : StaticBody2D
 
         Node bricksContainer = GetParent();
 
-        QueueFree();
-
-        // Check whether any active bricks remain
         foreach (Node child in bricksContainer.GetChildren())
         {
-            if (child is Brick brick && !brick.IsQueuedForDeletion())
+            if (child is Brick brick && !brick._isDestroyed)
                 return;
         }
 
         GD.Print("All bricks destroyed! Victory!");
 
-        // Change scenes after the physics callback finishes
         Callable.From(() =>
         {
             if (gameManager.CurrentState == GameManager.GameState.Level)
@@ -43,5 +40,29 @@ public partial class Brick : StaticBody2D
                 gameManager.ChangeState(GameManager.GameState.Victory);
             }
         }).CallDeferred();
+    }
+
+    private void SetDestroyed(bool destroyed)
+    {
+        _isDestroyed = destroyed;
+
+        Visible = !destroyed;
+
+        GetNode<CollisionShape2D>("CollisionShape2D")
+            .SetDeferred("disabled", destroyed);
+    }
+
+    public Godot.Collections.Dictionary<string, Variant> SaveData()
+    {
+        return new Godot.Collections.Dictionary<string, Variant>
+        {
+            { "isDestroyed", _isDestroyed }
+        };
+    }
+
+    public void LoadData(
+        Godot.Collections.Dictionary<string, Variant> data)
+    {
+        SetDestroyed(data["isDestroyed"].AsBool());
     }
 }
