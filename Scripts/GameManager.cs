@@ -13,6 +13,14 @@ public partial class GameManager : Node, ISaveable
         Pause
     }
 
+    private static readonly string[] LevelScenes =
+    {
+        "res://Scenes/Levels/Level1.tscn",
+        "res://Scenes/Levels/Level2.tscn"
+    };
+
+    public int CurrentLevelIndex { get; private set; } = 0;
+
     public GameState CurrentState { get; private set; } = GameState.MainMenu;
 
     private GameState _previousState;
@@ -98,10 +106,35 @@ public partial class GameManager : Node, ISaveable
         EmitSignal(SignalName.ScoreChanged, Score);
         EmitSignal(SignalName.LivesChanged, Lives);
 
-        ChangeState(GameState.Level);
+        ChangeState(GameState.Level, 0);
     }
 
-    public void ChangeState(GameState newState)
+    public static bool IsValidLevelIndex(int levelIndex)
+    {
+        return levelIndex >= 0 &&
+               levelIndex < LevelScenes.Length;
+    }
+
+    public void CompleteLevel()
+    {
+        if (CurrentState != GameState.Level)
+            return;
+
+        int nextLevelIndex = CurrentLevelIndex + 1;
+
+        if (IsValidLevelIndex(nextLevelIndex))
+        {
+            ChangeState(GameState.Level, nextLevelIndex);
+        }
+        else
+        {
+            ChangeState(GameState.Victory);
+        }
+    }
+
+    public void ChangeState(
+        GameState newState,
+        int levelIndex = 0)
     {
         if (
             newState == GameState.Options ||
@@ -112,13 +145,20 @@ public partial class GameManager : Node, ISaveable
             return;
         }
 
+        if (newState == GameState.Level &&
+            !IsValidLevelIndex(levelIndex))
+        {
+            GD.PushError($"Invalid level index: {levelIndex}");
+            return;
+        }
+
         if (_optionsInstance != null)
             CloseOptions();
 
         string scenePath = newState switch
         {
             GameState.MainMenu => "res://Scenes/MainMenu.tscn",
-            GameState.Level => "res://Scenes/Levels/Level.tscn",
+            GameState.Level => LevelScenes[levelIndex],
             GameState.GameOver => "res://Scenes/GameOver.tscn",
             GameState.Victory => "res://Scenes/Victory.tscn",
             _ => ""
@@ -135,6 +175,14 @@ public partial class GameManager : Node, ISaveable
         if (result == Error.Ok)
         {
             CurrentState = newState;
+
+            if (newState == GameState.Level)
+            {
+                CurrentLevelIndex = levelIndex;
+
+                GD.Print($"Loading level {CurrentLevelIndex + 1}");
+            }
+
             UpdateMusic(newState);
         }
         else
@@ -219,7 +267,8 @@ public partial class GameManager : Node, ISaveable
         {
             { "score", Score },
             { "lives", Lives },
-            { "state", (int)savedState }
+            { "state", (int)savedState },
+            { "levelIndex", CurrentLevelIndex }
         };
     }
 
@@ -228,7 +277,12 @@ public partial class GameManager : Node, ISaveable
     {
         GameState savedState = (GameState)data["state"].AsInt32();
 
-        if (CurrentState != savedState)
+        int savedLevelIndex = data.ContainsKey("levelIndex")
+            ? data["levelIndex"].AsInt32()
+            : 0;
+
+        if (CurrentState != savedState ||
+            CurrentLevelIndex != savedLevelIndex)
         {
             throw new System.InvalidOperationException(
                 "The saved game scene must be loaded first."

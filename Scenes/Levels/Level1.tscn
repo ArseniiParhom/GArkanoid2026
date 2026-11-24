@@ -49,22 +49,22 @@ shape = SubResource("RectangleShape2D_02k47")
 [node name="Bricks" type="Node2D" parent="." unique_id=1009640207]
 
 [node name="Brick" parent="Bricks" unique_id=2047998220 instance=ExtResource("3_bk2yi")]
-position = Vector2(138, 147)
+position = Vector2(140, 140)
 
 [node name="Brick2" parent="Bricks" unique_id=1403707117 instance=ExtResource("3_bk2yi")]
-position = Vector2(216, 69)
+position = Vector2(220, 60)
 
 [node name="Brick3" parent="Bricks" unique_id=1722144850 instance=ExtResource("3_bk2yi")]
-position = Vector2(278, 146)
+position = Vector2(300, 140)
 
 [node name="Brick4" parent="Bricks" unique_id=1711556327 instance=ExtResource("3_bk2yi")]
-position = Vector2(344, 70)
+position = Vector2(360, 60)
 
 [node name="Brick5" parent="Bricks" unique_id=1383497589 instance=ExtResource("3_bk2yi")]
-position = Vector2(439, 148)
+position = Vector2(460, 140)
 
 [node name="Brick6" parent="Bricks" unique_id=965926743 instance=ExtResource("3_bk2yi")]
-position = Vector2(508, 72)
+position = Vector2(520, 60)
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=1189344188]
 collision_layer = 2

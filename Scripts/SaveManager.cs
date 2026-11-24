@@ -63,7 +63,9 @@ public static class SaveManager
 
         file.StoreString(json);
 
-        GD.Print("Game saved successfully.");
+        GD.Print(
+            $"Game saved successfully. Level: {gameManager.CurrentLevelIndex + 1}"
+        );
     }
 
     public static async Task LoadGame(GameManager gameManager)
@@ -122,9 +124,19 @@ public static class SaveManager
             return;
         }
 
+        int savedLevelIndex = managerData.ContainsKey("levelIndex")
+            ? managerData["levelIndex"].AsInt32()
+            : 0;
+
+        if (!GameManager.IsValidLevelIndex(savedLevelIndex))
+        {
+            GD.PushError($"Invalid saved level index: {savedLevelIndex}");
+            return;
+        }
+
         SceneTree tree = gameManager.GetTree();
 
-        gameManager.ChangeState(savedState);
+        gameManager.ChangeState(savedState, savedLevelIndex);
 
         if (tree.CurrentScene != null)
         {
@@ -175,6 +187,8 @@ public static class SaveManager
             }
         }
 
-        GD.Print("Game loaded successfully.");
+        GD.Print(
+            $"Game loaded successfully. Level: {gameManager.CurrentLevelIndex + 1}"
+        );
     }
 }

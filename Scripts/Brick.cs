@@ -31,13 +31,13 @@ public partial class Brick : StaticBody2D, ISaveable
                 return;
         }
 
-        GD.Print("All bricks destroyed! Victory!");
+        GD.Print("All bricks destroyed! Level completed!");
 
         Callable.From(() =>
         {
             if (gameManager.CurrentState == GameManager.GameState.Level)
             {
-                gameManager.ChangeState(GameManager.GameState.Victory);
+                gameManager.CompleteLevel();
             }
         }).CallDeferred();
     }
