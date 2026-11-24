@@ -126,6 +126,10 @@ layout_mode = 2
 button_pressed = true
 text = "FULLSCREEN"
 
+[node name="SaveButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1740490155]
+layout_mode = 2
+text = "Save Game"
+
 [node name="BackToMainMenuButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=33096222]
 layout_mode = 2
 text = "Back to Main Menu"

@@ -1,9 +1,11 @@
 using Godot;
+using Arkanoid.Persistence;
 
 public partial class Options : Control
 {
     private Button _closeButton;
     private Button _backToMainMenuButton;
+    private Button _saveButton;
     private GameManager _gameManager;
 
     private OptionButton _resolutionOptionButton;
@@ -32,8 +34,19 @@ public partial class Options : Control
             basePath + "BackToMainMenuButton"
         );
 
+        _saveButton = GetNode<Button>(
+            basePath + "SaveButton"
+        );
+
         _closeButton.Pressed += OnCloseButtonPressed;
         _backToMainMenuButton.Pressed += OnBackToMainMenuPressed;
+        _saveButton.Pressed += OnSaveButtonPressed;
+
+        bool isPause =
+            _gameManager.CurrentState == GameManager.GameState.Pause;
+
+        _saveButton.Visible = isPause;
+        _saveButton.Disabled = !isPause;
 
         SetupAudioSlider(
             "Master",
@@ -191,6 +204,11 @@ public partial class Options : Control
         }
 
         _resolutionOptionButton.Disabled = enabled;
+    }
+
+    private void OnSaveButtonPressed()
+    {
+        SaveManager.SaveGame(_gameManager);
     }
 
     private void OnBackToMainMenuPressed()
